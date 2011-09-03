@@ -3,37 +3,10 @@ module std_ext.math;
 public import std.math;
 import std.algorithm;
 
-pure ulong sqrt(ulong n)
+/// Get the square root of `n` as an integer.
+pure T sqrt(T)(T n) if(is(T : ulong) || is(T : real))
 {
-    if(n <= 1)
-        return n;
-
-    ulong guess = n / 2;
-
-    while(true)
-    {
-        ulong newGuess = ((n / guess) + guess) / 2;
-
-        if(newGuess == guess)
-            return newGuess;
-
-        guess = newGuess;
-    }
-}
-
-pure uint sqrt(uint n)
-{
-    return cast(uint)sqrt(cast(ulong)n);
-}
-
-pure ushort sqrt(ushort n)
-{
-    return cast(ushort)sqrt(cast(ulong)n);
-}
-
-pure ubyte sqrt(ubyte n)
-{
-    return cast(ubyte)sqrt(cast(ubyte)n);
+    return cast(T)sqrt(cast(real)n);
 }
 
 unittest
@@ -96,12 +69,7 @@ private pure bool isPrime(ulong n, ulong[] primesCache)
     return true;
 }
 
-/** Get all the primes not greater than `n`.
- *
- * Params: n = No prime greater than this will be found in the collection.
- *
- * Returns: Dynamic array of all the primes not exceeding `n`.
- */
+/// Get a dynamic array of all primes not exceeding `n`.
 pure ulong[] getPrimesUpTo(ulong n)
 {
     if(n < 2)
@@ -110,23 +78,13 @@ pure ulong[] getPrimesUpTo(ulong n)
     return getPrimesUpTo(n, [2]);
 }
 
-/** Get the first `n` primes.
- *
- * Params: n = Number of primes to get.
- *
- * Returns: Dynamic array of the first `n` primes.
-*/
+/// Get the first `n` primes in a dynamic array.
 pure ulong[] getPrimes(ulong n)
 {
     return getPrimes(n, [2]);
 }
 
-/** Check if a number is prime.
- *
- * Params: n = The number to check for primality.
- *
- * Returns: `true` iff `n` is prime.
- */
+/// Check if `n` is prime.
 pure bool isPrime(ulong n)
 {
     return isPrime(n, [2]);
