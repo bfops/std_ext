@@ -25,6 +25,9 @@ unittest
 
 private pure ulong[] getPrimesUpTo(ulong n, ulong[] primesCache)
 {
+    if(n < 2)
+        return [];
+
     assert(primesCache.length > 0);
 
     for(ulong i = primesCache[$ - 1]; i <= n; ++i)
@@ -37,6 +40,9 @@ private pure ulong[] getPrimesUpTo(ulong n, ulong[] primesCache)
 // TODO: Overflow checking with loops.
 private pure ulong[] getPrimes(ulong n, ulong[] primesCache)
 {
+    if(n == 0)
+        return [];
+
     assert(primesCache.length > 0);
 
     auto last = primesCache[$ - 1];
@@ -54,6 +60,9 @@ private pure ulong[] getPrimes(ulong n, ulong[] primesCache)
 
 private pure bool isPrime(ulong n, ulong[] primesCache)
 {
+    if(n < 2)
+        return false;
+
     auto s = sqrt(n);
     getPrimesUpTo(s, primesCache);
 
@@ -72,10 +81,13 @@ private pure bool isPrime(ulong n, ulong[] primesCache)
 /// Get a dynamic array of all primes not exceeding `n`.
 pure ulong[] getPrimesUpTo(ulong n)
 {
-    if(n < 2)
-        return [];
-
     return getPrimesUpTo(n, [2]);
+}
+
+unittest
+{
+    assert(getPrimesUpTo(1) == []);
+    assert(getPrimesUpTo(12) == [2, 3, 5, 7, 11]);
 }
 
 /// Get the first `n` primes in a dynamic array.
@@ -84,8 +96,25 @@ pure ulong[] getPrimes(ulong n)
     return getPrimes(n, [2]);
 }
 
+unittest
+{
+    assert(getPrimes(0) == []);
+    assert(getPrimes(5) == [2, 3, 5, 7, 11]);
+}
+
 /// Check if `n` is prime.
 pure bool isPrime(ulong n)
 {
     return isPrime(n, [2]);
+}
+
+unittest
+{
+    assert(!isPrime(0));
+    assert(!isPrime(1));
+    assert(isPrime(2));
+    assert(!isPrime(9));
+    assert(isPrime(11));
+    assert(!isPrime(42));
+    assert(isPrime(43));
 }
